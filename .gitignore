@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build output
+client/dist/
+dist/
+
+# Environment
+.env
+.env.*
+
+# SQLite database (regenerate via migrate + seed)
+*.sqlite3
+*.sqlite3-journal
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

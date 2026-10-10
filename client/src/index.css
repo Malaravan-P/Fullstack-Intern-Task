@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark; /* native selects, inputs, scrollbars follow the theme */
+  }
+  body {
+    @apply bg-ivory text-stone-900 antialiased dark:bg-[#0e0e13] dark:text-stone-100;
+  }
+  ::selection {
+    background: #fef08a;
+    color: #1c1917;
+    text-shadow: none;
+  }
+  html.dark ::selection {
+    background: #f59e0b;
+    color: #1c1917;
+  }
+  ::selection {
+    -webkit-tap-highlight-color: transparent;
+  }
+  input::selection,
+  textarea::selection {
+    background: #fef08a;
+    color: #1c1917;
+  }
+  html.dark input::selection,
+  html.dark textarea::selection {
+    background: #f59e0b;
+    color: #1c1917;
+  }
+}
+
+@layer utilities {
+  /* Smooth dark↔light cross-fade: enabled by JS for ~450ms on toggle only,
+   so normal hovers/transitions stay instant. */
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease,
+    fill 0.4s ease,
+    box-shadow 0.4s ease !important;
+}
+
+/* Thin accent rule used under headings */
+  .rule {
+    @apply inline-block h-1 w-10 rounded-full bg-gradient-to-r from-indigo-600 to-amber-500;
+  }
+
+  /* Animated underline for nav links */
+  .link-draw {
+    position: relative;
+  }
+  .link-draw::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 2px;
+    width: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #4f46e5, #f59e0b);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .link-draw:hover::after,
+  .link-draw.is-active::after {
+    transform: scaleX(1);
+  }
+
+  /* Favorite star pop */
+  @keyframes star-pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+  .star-pop {
+    animation: star-pop 0.35s ease;
+  }
+}
