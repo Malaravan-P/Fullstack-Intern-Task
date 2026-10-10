@@ -62,7 +62,7 @@ export default function CompareModal({ templates, onClose }) {
                     className="border-b border-stone-100 p-3 text-stone-700 dark:border-white/5 dark:text-stone-200"
                   >
                     {row.key === "avg_rating" ? (
-                      <span className="text-amber-400">
+                      <span className="text-emerald-400">
                         ★ {t.avg_rating ?? 0}
                       </span>
                     ) : (

@@ -10,7 +10,7 @@ import { FONT_OPTIONS, extractTheme, buildCustomHtml } from "../lib/customize";
 function Stars({ value, size = "text-lg" }) {
   const full = Math.round(Number(value) || 0);
   return (
-    <span className={`${size} text-amber-400 tracking-tight`} aria-label={`${value} out of 5`}>
+    <span className={`${size} text-emerald-400 tracking-tight`} aria-label={`${value} out of 5`}>
       {[1, 2, 3, 4, 5].map((i) => (
         <span key={i} className={i <= full ? "" : "opacity-30"}>
           ★
@@ -141,7 +141,7 @@ export default function PreviewModal({ templateId, onClose, isFavorite, onFavori
               <div className="flex items-center gap-2 bg-stone-100 px-4 py-2.5 dark:bg-stone-800">
                 <span className="flex gap-1.5">
                   <span className="h-3 w-3 rounded-full bg-red-400" />
-                  <span className="h-3 w-3 rounded-full bg-amber-400" />
+                  <span className="h-3 w-3 rounded-full bg-emerald-400" />
                   <span className="h-3 w-3 rounded-full bg-emerald-400" />
                 </span>
                 <span className="ml-2 flex-1 truncate rounded-md bg-white px-3 py-1 text-xs font-medium text-stone-400 dark:bg-stone-900 dark:text-stone-500">
@@ -248,7 +248,7 @@ export default function PreviewModal({ templateId, onClose, isFavorite, onFavori
                       setTheme(extractTheme(template.preview_html));
                       setFontId("default");
                     }}
-                    className="ml-auto text-xs font-semibold text-indigo-600 transition hover:text-indigo-500 dark:text-indigo-400"
+                    className="ml-auto text-xs font-semibold text-emerald-600 transition hover:text-emerald-500 dark:text-emerald-400"
                   >
                     ↺ Reset
                   </button>
@@ -259,7 +259,7 @@ export default function PreviewModal({ templateId, onClose, isFavorite, onFavori
             <div className="p-6">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <span className="rounded-full bg-indigo-100 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+                  <span className="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
                     {template.category}
                   </span>
                   <h2 className="mt-2 text-2xl font-bold text-stone-900 dark:text-stone-100">
@@ -291,7 +291,7 @@ export default function PreviewModal({ templateId, onClose, isFavorite, onFavori
                         onClick={() => rate(i)}
                         className={`transition hover:scale-110 ${
                           myScore && i <= myScore
-                            ? "text-amber-400"
+                            ? "text-emerald-400"
                             : "text-stone-300 dark:text-stone-600"
                         }`}
                         aria-label={`Rate ${i}`}
@@ -309,8 +309,8 @@ export default function PreviewModal({ templateId, onClose, isFavorite, onFavori
                   disabled={busy}
                   className={`rounded-xl px-5 py-2.5 text-sm font-semibold transition disabled:opacity-60 ${
                     fav
-                      ? "bg-amber-100 text-amber-700 ring-1 ring-amber-300 hover:bg-amber-200 dark:bg-amber-500/15 dark:text-amber-300"
-                      : "bg-indigo-600 text-white shadow-lg shadow-indigo-600/25 hover:bg-indigo-500"
+                      ? "bg-emerald-100 text-emerald-700 ring-1 ring-emerald-300 hover:bg-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-300"
+                      : "bg-emerald-500 text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-600"
                   }`}
                 >
                   {fav ? "★ Favorited" : "☆ Add to favorites"}
@@ -336,7 +336,7 @@ export default function PreviewModal({ templateId, onClose, isFavorite, onFavori
                     onClick={() => setCustomizing((c) => !c)}
                     className={`rounded-xl border px-5 py-2.5 text-sm font-semibold transition ${
                       customizing
-                        ? "border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-500/30 dark:bg-indigo-500/15 dark:text-indigo-300"
+                        ? "border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300"
                         : "border-stone-300 text-stone-700 hover:bg-stone-50 dark:border-white/15 dark:text-stone-200 dark:hover:bg-stone-800"
                     }`}
                   >

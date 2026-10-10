@@ -110,7 +110,7 @@ export default function NotificationBell({ onOpenChange }) {
               {unread > 0 && (
                 <button
                   onClick={markAllRead}
-                  className="text-xs font-semibold text-indigo-600 transition hover:text-indigo-500 dark:text-indigo-400"
+                  className="text-xs font-semibold text-emerald-600 transition hover:text-emerald-500 dark:text-emerald-400"
                 >
                   Mark all read
                 </button>
@@ -143,12 +143,12 @@ export default function NotificationBell({ onOpenChange }) {
                       <button
                         onClick={() => markRead(n)}
                         className={`flex w-full items-start gap-3 px-4 py-3 text-left transition hover:bg-stone-50 dark:hover:bg-stone-800 ${
-                          n.read ? "" : "bg-indigo-50/60 dark:bg-indigo-500/10"
+                          n.read ? "" : "bg-emerald-50/60 dark:bg-emerald-500/10"
                         }`}
                       >
                         <span
                           className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${
-                            n.read ? "bg-transparent" : "bg-indigo-500"
+                            n.read ? "bg-transparent" : "bg-emerald-500"
                           }`}
                         />
                         <span className="min-w-0 flex-1">

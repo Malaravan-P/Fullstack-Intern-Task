@@ -55,6 +55,17 @@ export default function TemplateCard({
     setBusy(false);
   }
 
+  async function copyLink(e) {
+    e.stopPropagation();
+    const url = `${window.location.origin}/templates/${template.id}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      toast("Link copied to clipboard!", "success");
+    } catch {
+      toast("Unable to copy link", "error");
+    }
+  }
+
   const rating = Number(template.avg_rating) || 0;
 
   return (
@@ -70,10 +81,10 @@ export default function TemplateCard({
           loading="lazy"
           className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
         />
-        <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-indigo-700 shadow-sm dark:bg-stone-900/90 dark:text-indigo-300">
+        <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-700 shadow-sm dark:bg-stone-900/90 dark:text-emerald-300">
           {template.category}
         </span>
-        {onToggleCompare && (
+         {onToggleCompare && (
           <label
             className="absolute right-3 top-3 flex cursor-pointer items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-stone-600 shadow-sm dark:bg-stone-900/90 dark:text-stone-300"
             onClick={(e) => e.stopPropagation()}
@@ -82,7 +93,7 @@ export default function TemplateCard({
               type="checkbox"
               checked={!!compareSelected}
               onChange={() => onToggleCompare(template)}
-              className="h-3.5 w-3.5 accent-indigo-600"
+              className="h-3.5 w-3.5 accent-emerald-600"
             />
             Compare
           </label>
@@ -94,7 +105,7 @@ export default function TemplateCard({
           <h3 className="font-semibold text-stone-900 dark:text-stone-100">
             {template.name}
           </h3>
-          <span className="shrink-0 text-xs text-amber-400">
+          <span className="shrink-0 text-xs text-teal-500">
             ★ {rating}
             <span className="ml-1 text-stone-400">({template.rating_count ?? 0})</span>
           </span>
@@ -109,7 +120,7 @@ export default function TemplateCard({
               e.stopPropagation();
               onPreview?.(template);
             }}
-            className="flex h-11 flex-1 items-center justify-center whitespace-nowrap rounded-xl border border-stone-200 px-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-50 dark:border-white/10 dark:text-stone-200 dark:hover:bg-stone-800"
+            className="flex h-11 flex-1 items-center justify-center whitespace-nowrap rounded-lg border border-stone-200 px-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-50 dark:border-white/10 dark:text-stone-200 dark:hover:bg-stone-800"
           >
             Preview
           </button>
@@ -117,10 +128,10 @@ export default function TemplateCard({
             onClick={toggleFavorite}
             disabled={busy}
             ref={starRef}
-            className={`flex h-11 flex-1 items-center justify-center whitespace-nowrap rounded-xl px-3 text-sm font-semibold transition disabled:opacity-60 ${
+            className={`flex h-11 flex-1 items-center justify-center whitespace-nowrap rounded-lg px-3 text-sm font-semibold transition disabled:opacity-60 ${
               favorite
-                ? "bg-amber-100 text-amber-700 ring-1 ring-amber-300 hover:bg-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:ring-amber-500/30"
-                : "bg-stone-900 text-white hover:bg-stone-700 dark:bg-white dark:text-stone-900 dark:hover:bg-stone-200"
+                ? "bg-emerald-100 text-emerald-700 ring-1 ring-emerald-300 hover:bg-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-300 dark:ring-emerald-500/30"
+                : "bg-emerald-500 text-white hover:bg-emerald-600 dark:bg-white dark:text-stone-900 dark:hover:bg-stone-200"
             }`}
           >
             {favorite ? "★ Saved" : "☆ Favorite"}

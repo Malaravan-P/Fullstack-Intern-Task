@@ -5,6 +5,15 @@ import TemplateCard from "../components/TemplateCard";
 import PreviewModal from "../components/PreviewModal";
 import { pushRecent } from "../lib/recent";
 
+const categoryStyles = [
+  "from-sky-500 to-blue-500",
+  "from-rose-500 to-pink-500",
+  "from-violet-500 to-purple-500",
+  "from-emerald-500 to-green-500",
+  "from-fuchsia-500 to-pink-500",
+  "from-cyan-500 to-blue-600",
+];
+
 const features = [
   {
     icon: "⭐",
@@ -23,14 +32,7 @@ const features = [
   },
 ];
 
-const categoryStyles = [
-  "from-indigo-600 to-violet-600",
-  "from-emerald-600 to-teal-600",
-  "from-rose-600 to-orange-500",
-  "from-sky-600 to-cyan-500",
-  "from-amber-500 to-yellow-600",
-  "from-fuchsia-600 to-pink-600",
-];
+
 
 const faqs = [
   {
@@ -106,12 +108,12 @@ export default function Home() {
     <main className="mx-auto max-w-6xl px-4 sm:px-6">
       {/* ============ Hero ============ */}
       <section className="flex flex-col items-center py-20 text-center sm:py-28">
-        <span className="animate-fade-up rounded-full border border-indigo-600/15 bg-indigo-600/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-indigo-700">
+        <span className="animate-fade-up rounded-full border border-emerald-600/15 bg-emerald-600/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-emerald-700">
           ✦ Mini SaaS Template Store
         </span>
         <h1 className="mt-6 max-w-3xl animate-fade-up font-display text-4xl font-extrabold leading-tight tracking-tight text-stone-900 [animation-delay:80ms] sm:text-6xl dark:text-stone-50">
           Discover templates that{" "}
-          <span className="bg-gradient-to-r from-indigo-600 via-violet-500 to-amber-500 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
             make websites beautiful
           </span>
         </h1>
@@ -119,10 +121,15 @@ export default function Home() {
           Browse a curated collection of ready-made designs, mark the ones you
           love, and find them all in one place.
         </p>
+        <div className="mt-6 flex items-center gap-4 text-sm text-stone-500 dark:text-stone-400">
+          <span>10+ Templates</span>
+          <span>•</span>
+          <span>{categories.length} Categories</span>
+        </div>
         <div className="mt-8 flex animate-fade-up flex-wrap items-center justify-center gap-3 [animation-delay:240ms]">
           <Link
             to="/templates"
-            className="rounded-full bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition hover:-translate-y-0.5 hover:bg-indigo-500"
+            className="rounded-full bg-emerald-500 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-600/25 transition hover:-translate-y-0.5 hover:bg-emerald-600"
           >
             Browse templates →
           </Link>
@@ -135,7 +142,7 @@ export default function Home() {
         </div>
 
         {/* decorative glow */}
-        <div className="pointer-events-none absolute left-1/2 top-10 -z-10 h-72 w-[36rem] max-w-full -translate-x-1/2 rounded-full bg-gradient-to-r from-indigo-200/60 via-violet-200/50 to-amber-200/60 blur-3xl" />
+        <div className="pointer-events-none absolute left-1/2 top-10 -z-10 h-72 w-[36rem] max-w-full -translate-x-1/2 rounded-full bg-gradient-to-r from-emerald-200/60 via-teal-200/50 to-emerald-100/60 blur-3xl" />
       </section>
 
       {/* ============ Features ============ */}
@@ -146,7 +153,7 @@ export default function Home() {
             className="animate-fade-up flex items-start gap-4 rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-white/10 dark:bg-stone-900"
             style={{ animationDelay: `${i * 90}ms` }}
           >
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-100 to-amber-100 text-2xl">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 text-2xl">
               {f.icon}
             </div>
             <div>
@@ -173,24 +180,24 @@ export default function Home() {
           </div>
           <Link
             to="/templates"
-            className="link-draw pb-1 text-sm font-semibold text-indigo-700 dark:text-indigo-300"
+             className="link-draw pb-1 text-sm font-semibold text-emerald-700 dark:text-emerald-300"
           >
             View all templates →
           </Link>
         </div>
 
-        {templates.length === 0 ? (
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="animate-pulse">
-                <div className="h-44 rounded-2xl bg-stone-200 dark:bg-stone-800" />
-                <div className="mt-4 h-4 w-2/3 rounded bg-stone-200 dark:bg-stone-800" />
-                <div className="mt-2 h-3 w-full rounded bg-stone-100 dark:bg-stone-800" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+         {templates.length === 0 ? (
+           <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+             {[...Array(3)].map((_, i) => (
+               <div key={i} className="animate-pulse">
+                 <div className="h-44 rounded-2xl bg-stone-200 dark:bg-stone-800" />
+                 <div className="mt-4 h-4 w-2/3 rounded bg-stone-200 dark:bg-stone-800" />
+                 <div className="mt-2 h-3 w-full rounded bg-stone-100 dark:bg-stone-800" />
+               </div>
+             ))}
+           </div>
+         ) : (
+           <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
             {templates.map((t) => (
               <TemplateCard
                 key={t.id}
@@ -206,18 +213,18 @@ export default function Home() {
 
       {/* ============ CTA ============ */}
       <section className="py-10">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-700 via-violet-700 to-indigo-800 px-8 py-14 text-center shadow-xl shadow-indigo-700/20">
-          <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-amber-400/20 blur-2xl" />
+         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-600 px-8 py-14 text-center shadow-xl shadow-emerald-600/20">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-emerald-400/20 blur-2xl" />
           <div className="pointer-events-none absolute -bottom-20 -left-10 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
           <h2 className="font-display text-3xl font-bold text-white">
             Ready to find your next favorite?
           </h2>
-          <p className="mx-auto mt-3 max-w-md text-indigo-100">
+           <p className="mx-auto mt-3 max-w-md text-emerald-100">
             Create an account in seconds and start building your collection.
           </p>
           <Link
             to="/register"
-            className="mt-7 inline-block rounded-full bg-white px-7 py-3 text-sm font-bold text-indigo-800 shadow transition hover:-translate-y-0.5 hover:bg-indigo-50"
+             className="mt-7 inline-block rounded-full bg-white px-7 py-3 text-sm font-bold text-emerald-700 shadow transition hover:-translate-y-0.5 hover:bg-emerald-50"
           >
             Get started — it's free
           </Link>
@@ -238,11 +245,11 @@ export default function Home() {
           </div>
           <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
             {categories.map((c, i) => (
-              <Link
-                key={c}
-                to={`/templates?category=${encodeURIComponent(c)}`}
-                className={`group flex items-center justify-between rounded-2xl bg-gradient-to-br ${categoryStyles[i % categoryStyles.length]} px-6 py-5 text-left shadow-lg transition hover:-translate-y-1 hover:shadow-xl`}
-              >
+               <Link
+                 key={c}
+                 to={`/templates?category=${encodeURIComponent(c)}`}
+                 className={`group flex items-center justify-between rounded-2xl bg-gradient-to-br ${categoryStyles[i % categoryStyles.length]} px-6 py-5 text-left shadow-lg transition hover:-translate-y-1 hover:shadow-xl`}
+               >
                 <span className="text-sm font-bold text-white sm:text-base">{c}</span>
                 <span className="text-lg text-white/70 transition group-hover:translate-x-1">
                   →
@@ -278,7 +285,7 @@ export default function Home() {
                     <span
                       className={`font-semibold transition-colors duration-300 ${
                         open
-                          ? "text-indigo-700 dark:text-indigo-300"
+                           ? "text-emerald-700 dark:text-emerald-300"
                           : "text-stone-900 dark:text-stone-100"
                       }`}
                     >
@@ -287,7 +294,7 @@ export default function Home() {
                     <span
                       className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-300 ease-out ${
                         open
-                          ? "rotate-180 bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300"
+                           ? "rotate-180 bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-300"
                           : "bg-stone-100 text-stone-500 dark:bg-stone-800 dark:text-stone-300"
                       }`}
                       aria-hidden="true"

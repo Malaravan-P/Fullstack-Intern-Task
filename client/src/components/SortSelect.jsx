@@ -34,7 +34,7 @@ export default function SortSelect({ value, onChange }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="h-10 w-32 rounded-xl border border-stone-300 bg-white px-3 text-sm font-medium text-stone-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500/20 hover:bg-stone-50 dark:border-white/15 dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-stone-800"
+        className="h-10 w-32 rounded-xl border border-stone-300 bg-white px-3 text-sm font-medium text-stone-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-500/20 hover:bg-stone-50 dark:border-white/15 dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-stone-800"
         aria-haspopup="listbox"
         aria-expanded={open}
       >

@@ -119,7 +119,7 @@ export default function CollectionPickerModal({ templateId, onClose }) {
                     <span
                       className={`flex h-5 w-5 items-center justify-center rounded-md border text-xs font-bold text-white transition ${
                         c.has
-                          ? "border-indigo-600 bg-indigo-600"
+                          ? "border-emerald-500 bg-emerald-500"
                           : "border-stone-300 dark:border-white/20"
                       }`}
                     >

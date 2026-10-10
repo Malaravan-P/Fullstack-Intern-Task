@@ -4,12 +4,13 @@ import api, { request } from "../lib/api";
 import BackButton from "../components/BackButton";
 import SortSelect from "../components/SortSelect";
 import TemplateCard from "../components/TemplateCard";
+import PreviewModal from "../components/PreviewModal";
 import { useToast } from "../context/ToastContext";
 
 function CollectionCover({ cover, name }) {
   if (!cover) {
     return (
-      <div className="flex h-full items-center justify-center bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-300 dark:from-indigo-500/15 dark:to-indigo-500/5 dark:text-indigo-400/60">
+      <div className="flex h-full items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-100 text-emerald-500 dark:from-emerald-500/15 dark:to-emerald-500/5 dark:text-emerald-400/60">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <rect width="7" height="7" x="3" y="3" rx="1" />
           <rect width="7" height="7" x="14" y="3" rx="1" />
@@ -41,6 +42,7 @@ export default function Collections() {
   const [detail, setDetail] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [sort, setSort] = useState("newest");
+  const [previewId, setPreviewId] = useState(null);
 
   const sortedCollections = [...collections].sort((a, b) => {
     switch (sort) {
@@ -137,6 +139,10 @@ export default function Collections() {
     } else toast(res.message, "error");
   }
 
+  function openPreview(t) {
+    setPreviewId(t.id);
+  }
+
   return (
     <main className="mx-auto max-w-6xl px-4 pb-20 pt-14 sm:px-6">
       <section className="mb-10">
@@ -153,7 +159,6 @@ export default function Collections() {
         </p>
       </section>
 
-{/* Create box */}
       <form
         onSubmit={create}
         className="mb-10 flex flex-col gap-3 rounded-2xl border border-dashed border-stone-300 bg-white p-5 dark:border-white/15 dark:bg-stone-900 sm:flex-row"
@@ -163,13 +168,13 @@ export default function Collections() {
           onChange={(e) => setNewName(e.target.value)}
           placeholder="New collection name, e.g. Portfolio Inspiration"
           maxLength={60}
-          className="flex-1 rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-900 placeholder-stone-400 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100 dark:placeholder-stone-500"
+          className="flex-1 rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-900 placeholder-stone-400 transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100 dark:placeholder-stone-500"
         />
         <div className="flex items-center gap-3">
           <button
             type="submit"
             disabled={creating || !newName.trim()}
-            className="h-10 rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition hover:bg-indigo-500 disabled:opacity-60"
+            className="h-10 rounded-xl bg-emerald-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-600 disabled:opacity-60"
           >
             {creating ? "Creating…" : "New collection"}
           </button>
@@ -188,7 +193,7 @@ export default function Collections() {
         </div>
       ) : collections.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-stone-300 bg-white p-14 text-center dark:border-white/15 dark:bg-stone-900">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-indigo-100 text-2xl dark:from-amber-500/20 dark:to-indigo-500/20">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-100 text-2xl dark:from-emerald-500/20 dark:to-teal-500/20">
             📁
           </div>
           <h2 className="mt-4 text-lg font-bold text-stone-900 dark:text-stone-100">
@@ -200,7 +205,7 @@ export default function Collections() {
           </p>
           <Link
             to="/templates"
-            className="mt-6 inline-block rounded-full bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:-translate-y-0.5 hover:bg-indigo-500"
+            className="mt-6 inline-block rounded-full bg-emerald-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:-translate-y-0.5 hover:bg-emerald-600"
           >
             Browse templates →
           </Link>
@@ -219,7 +224,7 @@ export default function Collections() {
                 >
                   <div className="relative h-44 overflow-hidden">
                     <CollectionCover cover={cover} name={c.name} />
-                    <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-indigo-700 shadow-sm dark:bg-stone-900/90 dark:text-indigo-300">
+                    <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-700 shadow-sm dark:bg-stone-900/90 dark:text-emerald-300">
                       {c.template_count} {c.template_count === 1 ? "template" : "templates"}
                     </span>
                     <div className="absolute right-3 top-3 flex gap-2 opacity-0 transition group-hover:opacity-100">
@@ -296,7 +301,7 @@ export default function Collections() {
                       setEditingId(null);
                     }}
                     disabled={!editingName.trim()}
-                    className="flex-1 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-60"
+                    className="flex-1 rounded-xl bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:opacity-60"
                   >
                     Save
                   </button>
@@ -330,7 +335,7 @@ export default function Collections() {
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {detail?.templates.map((t) => (
                       <div key={t.id} className="relative">
-                        <TemplateCard template={t} isFavorite={false} />
+                        <TemplateCard template={t} isFavorite={false} onPreview={openPreview} />
                         <button
                           onClick={() => removeTemplate(t.id)}
                           className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-sm text-red-500 shadow transition hover:bg-red-50 dark:bg-stone-900/90"
@@ -346,6 +351,14 @@ export default function Collections() {
             </section>
           )}
         </div>
+      )}
+
+      {previewId && (
+        <PreviewModal
+          templateId={previewId}
+          onClose={() => setPreviewId(null)}
+          isFavorite={false}
+        />
       )}
     </main>
   );

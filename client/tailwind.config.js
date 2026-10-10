@@ -5,8 +5,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', "system-ui", "sans-serif"],
-        display: ["Sora", '"Plus Jakarta Sans"', "sans-serif"],
+        sans: ['"Merriweather"', "system-ui", "sans-serif"],
+        display: ["Poppins", '"Merriweather"', "sans-serif"],
       },
       keyframes: {
         "fade-up": {
@@ -18,6 +18,10 @@ export default {
         "fade-up": "fade-up 0.7s ease both",
       },
       colors: {
+        primary: "#10b981",
+        primaryHover: "#059669",
+        accent: "#14b8a6",
+        accentHover: "#0d9488",
         ivory: "#faf8f4",
       },
     },

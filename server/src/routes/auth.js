@@ -183,4 +183,11 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/me", auth, (req, res) => {
+  res.json({
+    success: true,
+    user: publicUser(req.user),
+  });
+});
+
 module.exports = router;

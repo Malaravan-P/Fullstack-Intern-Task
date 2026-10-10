@@ -9,7 +9,7 @@ const FILTERS = ["pending", "rejected", "approved"];
 
 function StatusChip({ status }) {
   const styles = {
-    pending: "bg-amber-100 text-amber-800 ring-amber-300 dark:bg-amber-500/15 dark:text-amber-300 dark:ring-amber-500/30",
+    pending: "bg-emerald-100 text-emerald-800 ring-emerald-300 dark:bg-emerald-500/15 dark:text-emerald-300 dark:ring-emerald-500/30",
     approved: "bg-emerald-100 text-emerald-800 ring-emerald-300 dark:bg-emerald-500/15 dark:text-emerald-300 dark:ring-emerald-500/30",
     rejected: "bg-red-100 text-red-800 ring-red-300 dark:bg-red-500/15 dark:text-red-300 dark:ring-red-500/30",
   };
@@ -117,12 +117,12 @@ export default function AdminReviews() {
         </section>
 
         <div className="rounded-2xl border border-dashed border-stone-300 bg-white p-12 text-center dark:border-white/15 dark:bg-stone-900">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-indigo-100 text-2xl dark:from-amber-500/20 dark:to-indigo-500/20">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-100 text-2xl dark:from-emerald-500/20 dark:to-teal-500/20">
             🔒
           </div>
           <Link
             to="/templates"
-            className="mt-6 inline-block rounded-full bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition hover:-translate-y-0.5 hover:bg-indigo-500"
+            className="mt-6 inline-block rounded-full bg-emerald-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-600/25 transition hover:-translate-y-0.5 hover:bg-emerald-600"
           >
             Browse templates →
           </Link>
@@ -161,7 +161,7 @@ export default function AdminReviews() {
               onClick={() => setFilter(f)}
               className={`rounded-full px-4 py-1.5 text-sm font-semibold capitalize transition ring-1 ${
                 filter === f
-                  ? "bg-indigo-600 text-white ring-indigo-600"
+                  ? "bg-emerald-500 text-white ring-emerald-600"
                   : "bg-white text-stone-600 ring-stone-300 hover:bg-stone-50 dark:bg-stone-900 dark:text-stone-300 dark:ring-white/15 dark:hover:bg-stone-800"
               }`}
             >

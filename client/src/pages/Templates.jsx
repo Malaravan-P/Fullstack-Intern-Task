@@ -9,7 +9,7 @@ import CompareModal from "../components/CompareModal";
 import RequestCategoryModal from "../components/RequestCategoryModal";
 import { getRecent, pushRecent, clearRecent } from "../lib/recent";
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 8;
 
 export default function Templates() {
   const { user } = useAuth();
@@ -110,6 +110,12 @@ export default function Templates() {
     setLoading(true); // avoid an "empty results" flash while the new fetch runs
     setFetchKey((k) => k + 1); // guarantee one fetch, even if no dep actually changes
     fn();
+  }
+
+  function resetFilters() {
+    setSearch("");
+    setCategory("");
+    setFetchKey((k) => k + 1);
   }
 
   function loadMore() {
@@ -225,19 +231,20 @@ export default function Templates() {
             value={search}
             onChange={(e) => changeFilter(() => setSearch(e.target.value))}
             placeholder="Search templates…"
-            className="h-10 w-full appearance-none rounded-xl border border-stone-300 bg-white pl-11 pr-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100"
+            className="h-10 w-full appearance-none rounded-xl border border-stone-300 bg-white pl-11 pr-4 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100"
           />
         </div>
         <div className="relative shrink-0">
           <select
             value={sort}
             onChange={(e) => changeFilter(() => setSort(e.target.value))}
-            className="h-10 w-full appearance-none rounded-xl border border-stone-300 bg-white pl-4 pr-9 text-sm font-medium text-stone-700 outline-none transition focus:border-indigo-500 dark:border-white/15 dark:bg-stone-900 dark:text-stone-200"
+            className="h-10 w-full appearance-none rounded-xl border border-stone-300 bg-white pl-4 pr-9 text-sm font-medium text-stone-700 outline-none transition focus:border-emerald-500 dark:border-white/15 dark:bg-stone-900 dark:text-stone-200"
             aria-label="Sort templates"
           >
             <option value="newest">Newest first</option>
             <option value="oldest">Oldest first</option>
             <option value="name">Name (A–Z)</option>
+            <option value="popular">Most popular</option>
           </select>
           <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-stone-400">
             <svg
@@ -257,6 +264,19 @@ export default function Templates() {
         </div>
       </div>
 
+      {/* ---- Clear Filters ---- */}
+      {(search || category) && (
+        <div className="mb-4 animate-fade-up">
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="rounded-full border border-stone-300 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 dark:border-white/15 dark:bg-stone-900 dark:text-stone-300 dark:hover:bg-stone-800"
+          >
+            Clear all filters
+          </button>
+        </div>
+      )}
+
       {/* ---- Category chips + request a new one ---- */}
       <div className="mb-4 flex animate-fade-up flex-wrap items-center gap-2 [animation-delay:160ms]">
         {categories.length > 0 && (
@@ -265,7 +285,7 @@ export default function Templates() {
               onClick={() => changeFilter(() => setCategory(""))}
               className={`rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition ${
                 category === ""
-                  ? "bg-indigo-600 text-white shadow"
+                    ? "bg-emerald-500 text-white shadow"
                   : "bg-white text-stone-600 ring-1 ring-stone-200 hover:bg-stone-50 dark:bg-stone-900 dark:text-stone-300 dark:ring-white/10 dark:hover:bg-stone-800"
               }`}
             >
@@ -277,7 +297,7 @@ export default function Templates() {
                 onClick={() => changeFilter(() => setCategory(c))}
                 className={`rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition ${
                   category === c
-                    ? "bg-indigo-600 text-white shadow"
+                    ? "bg-emerald-500 text-white shadow"
                     : "bg-white text-stone-600 ring-1 ring-stone-200 hover:bg-stone-50 dark:bg-stone-900 dark:text-stone-300 dark:ring-white/10 dark:hover:bg-stone-800"
                 }`}
               >
@@ -288,7 +308,7 @@ export default function Templates() {
         )}
         <button
           onClick={() => setRequestOpen(true)}
-          className="rounded-full bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-indigo-600 ring-1 ring-indigo-200 transition hover:bg-indigo-50 dark:bg-stone-900 dark:text-indigo-300 dark:ring-indigo-500/30 dark:hover:bg-stone-800"
+           className="rounded-full bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-emerald-600 ring-1 ring-emerald-200 transition hover:bg-emerald-50 dark:bg-stone-900 dark:text-emerald-300 dark:ring-emerald-500/30 dark:hover:bg-stone-800"
         >
           Request a category
         </button>
@@ -318,7 +338,7 @@ export default function Templates() {
                     className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold transition disabled:cursor-default ${
                       voted
                         ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300"
-                        : "bg-stone-100 text-stone-500 hover:bg-indigo-100 hover:text-indigo-600 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-indigo-500/20 dark:hover:text-indigo-300"
+                         : "bg-stone-100 text-stone-500 hover:bg-emerald-100 hover:text-emerald-600 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-300"
                     }`}
                     aria-label={`Upvote ${s.name}`}
                   >
@@ -390,8 +410,8 @@ export default function Templates() {
       )}
 
       {/* ---- Grid ---- */}
-      {loading ? (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {loading ? (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="animate-pulse">
               <div className="h-44 rounded-2xl bg-stone-200 dark:bg-stone-800" />
@@ -417,34 +437,37 @@ export default function Templates() {
                 setCategory("");
               })
             }
-            className="mt-5 rounded-full bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500"
+            className="mt-5 rounded-full bg-emerald-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600"
           >
             Clear filters
           </button>
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {templates.map((t, i) => (
-              <TemplateCard
-                key={t.id}
-                index={i}
-                template={t}
-                isFavorite={favoriteIds.has(t.id)}
-                onFavoriteChange={handleFavoriteChange}
-                onPreview={openPreview}
-                compareSelected={compareList.some((x) => x.id === t.id)}
-                onToggleCompare={toggleCompare}
-              />
-            ))}
+          <div className="mb-4 text-sm text-stone-500 dark:text-stone-400">
+            Showing {templates.length} of {total} templates
           </div>
+           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+             {templates.map((t, i) => (
+               <TemplateCard
+                 key={t.id}
+                 index={i}
+                 template={t}
+                 isFavorite={favoriteIds.has(t.id)}
+                 onFavoriteChange={handleFavoriteChange}
+                 onPreview={openPreview}
+                 compareSelected={compareList.some((x) => x.id === t.id)}
+                 onToggleCompare={toggleCompare}
+               />
+             ))}
+           </div>
 
           {hasMore && (
             <div className="mt-10 text-center">
               <button
                 onClick={loadMore}
                 disabled={loadingMore}
-                className="rounded-full border border-stone-300 bg-white px-7 py-2.5 text-sm font-semibold text-stone-700 transition hover:border-indigo-400 hover:text-indigo-700 disabled:opacity-60 dark:border-white/15 dark:bg-stone-900 dark:text-stone-200"
+                className="rounded-full border border-stone-300 bg-white px-7 py-2.5 text-sm font-semibold text-stone-700 transition hover:border-emerald-400 hover:text-emerald-700 disabled:opacity-60 dark:border-white/15 dark:bg-stone-900 dark:text-stone-200"
               >
                 {loadingMore
                   ? "Loading…"
@@ -456,8 +479,8 @@ export default function Templates() {
       )}
 
       {!user && !loading && templates.length > 0 && (
-        <div className="mt-12 rounded-2xl border border-indigo-100 bg-indigo-50/60 px-6 py-5 text-center text-sm font-medium text-stone-600 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-stone-300">
-          <Link to="/login" className="font-bold text-indigo-700 hover:underline dark:text-indigo-300">
+        <div className="mt-12 rounded-2xl border border-emerald-100 bg-emerald-50/60 px-6 py-5 text-center text-sm font-medium text-stone-600 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-stone-300">
+          <Link to="/login" className="font-bold text-emerald-700 hover:underline dark:text-emerald-300">
             Sign in
           </Link>{" "}
           to add templates to your favorites.
@@ -475,7 +498,7 @@ export default function Templates() {
               if (compareList.length < 2) return toast("Select at least 2 templates to compare.", "info");
               setShowCompare(true);
             }}
-            className="rounded-full bg-indigo-600 px-5 py-1.5 text-sm font-semibold text-white transition hover:bg-indigo-500"
+             className="rounded-full bg-emerald-500 px-5 py-1.5 text-sm font-semibold text-white transition hover:bg-emerald-600"
           >
             Compare
           </button>

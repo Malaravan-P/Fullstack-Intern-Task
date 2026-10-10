@@ -45,7 +45,7 @@ export default function FeedbackModal({ onClose }) {
 
   const labelClass = "text-sm font-semibold text-stone-700 dark:text-stone-300";
   const inputClass =
-    "mt-1.5 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100 dark:placeholder:text-stone-500";
+    "mt-1.5 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100 dark:placeholder:text-stone-500";
   const errorClass = "mt-1 text-xs font-medium text-red-600 dark:text-red-400";
 
   return (
@@ -130,7 +130,7 @@ export default function FeedbackModal({ onClose }) {
             <button
               type="submit"
               disabled={busy}
-              className="flex-1 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-600/25 transition hover:bg-indigo-500 disabled:opacity-60"
+              className="flex-1 rounded-xl bg-emerald-500 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-600 disabled:opacity-60"
             >
               {busy ? "Sending…" : "Send feedback"}
             </button>

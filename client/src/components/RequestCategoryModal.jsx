@@ -84,7 +84,7 @@ export default function RequestCategoryModal({ onClose, onCreated }) {
             onChange={onChange}
             maxLength={40}
             placeholder="e.g. SaaS tools, Mobile apps…"
-            className="mt-1.5 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100 dark:placeholder:text-stone-500"
+            className="mt-1.5 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100 dark:placeholder:text-stone-500"
           />
           {error && (
             <p className="mt-2 text-xs font-medium text-red-600 dark:text-red-400">{error}</p>
@@ -94,7 +94,7 @@ export default function RequestCategoryModal({ onClose, onCreated }) {
             <button
               type="submit"
               disabled={busy}
-              className="flex-1 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-600/25 transition hover:bg-indigo-500 disabled:opacity-60"
+              className="flex-1 rounded-xl bg-emerald-500 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-600 disabled:opacity-60"
             >
               {busy ? "Submitting…" : "Submit request"}
             </button>

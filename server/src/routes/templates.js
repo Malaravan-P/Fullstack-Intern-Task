@@ -59,6 +59,7 @@ router.get("/", async (req, res) => {
     if (sort === "newest") query.orderBy("created_at", "desc").orderBy("id", "desc");
     else if (sort === "oldest") query.orderBy("created_at", "asc").orderBy("id", "asc");
     else if (sort === "name") query.orderBy("name", "asc");
+    else if (sort === "popular") query.orderBy("rating_count", "desc").orderBy("avg_rating", "desc");
     else query.orderBy("id");
 
     // Total count (before pagination) for load-more UI.

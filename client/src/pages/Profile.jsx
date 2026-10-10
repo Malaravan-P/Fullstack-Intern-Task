@@ -16,7 +16,7 @@ const TABS = [
 
 function StatusChip({ status }) {
   const styles = {
-    pending: "bg-amber-100 text-amber-800 ring-amber-300 dark:bg-amber-500/15 dark:text-amber-300 dark:ring-amber-500/30",
+    pending: "bg-emerald-100 text-emerald-800 ring-emerald-300 dark:bg-emerald-500/15 dark:text-emerald-300 dark:ring-emerald-500/30",
     approved: "bg-emerald-100 text-emerald-800 ring-emerald-300 dark:bg-emerald-500/15 dark:text-emerald-300 dark:ring-emerald-500/30",
     rejected: "bg-red-100 text-red-800 ring-red-300 dark:bg-red-500/15 dark:text-red-300 dark:ring-red-500/30",
   };
@@ -33,7 +33,7 @@ function StatusChip({ status }) {
 
 function Stars({ score }) {
   return (
-    <span className="text-base tracking-tight text-amber-400" aria-label={`${score} out of 5`}>
+    <span className="text-base tracking-tight text-emerald-400" aria-label={`${score} out of 5`}>
       {[1, 2, 3, 4, 5].map((i) => (
         <span key={i} className={i <= score ? "" : "opacity-25"}>
           ★
@@ -61,7 +61,7 @@ function Toggle({ checked, onChange, label, description, disabled }) {
         disabled={disabled}
         onClick={() => onChange(!checked)}
         className={`relative mt-0.5 h-6 w-11 shrink-0 rounded-full transition disabled:opacity-60 ${
-          checked ? "bg-indigo-600" : "bg-stone-300 dark:bg-stone-700"
+              checked ? "bg-emerald-500" : "bg-stone-300 dark:bg-stone-700"
         }`}
       >
         <span
@@ -217,7 +217,7 @@ export default function Profile() {
           <>
             {/* Identity header */}
             <div className="flex flex-col items-center px-8 pt-8">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-violet-600 text-3xl font-bold text-white shadow-lg shadow-indigo-600/25">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 text-3xl font-bold text-white shadow-lg shadow-emerald-600/25">
                 {me.name.charAt(0).toUpperCase()}
               </div>
 
@@ -234,13 +234,13 @@ export default function Profile() {
                         }}
                         maxLength={80}
                         autoFocus
-                        className="w-52 rounded-xl border border-stone-300 bg-white px-4 py-2 text-lg font-bold text-stone-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100"
+                        className="w-52 rounded-xl border border-stone-300 bg-white px-4 py-2 text-lg font-bold text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100"
                         aria-label="New name"
                       />
                       <button
                         type="submit"
                         disabled={savingName}
-                        className="rounded-lg bg-indigo-600 px-3.5 py-2 text-xs font-bold text-white transition hover:bg-indigo-500 disabled:opacity-60"
+                        className="rounded-lg bg-emerald-500 px-3.5 py-2 text-xs font-bold text-white transition hover:bg-emerald-600 disabled:opacity-60"
                       >
                         {savingName ? "Saving…" : "Save"}
                       </button>
@@ -267,7 +267,7 @@ export default function Profile() {
                       onClick={startRename}
                       aria-label="Rename"
                       title="Rename"
-                      className="flex h-8 w-8 items-center justify-center rounded-full text-stone-400 transition hover:bg-stone-100 hover:text-indigo-600 dark:text-stone-500 dark:hover:bg-stone-800 dark:hover:text-indigo-300"
+                      className="flex h-8 w-8 items-center justify-center rounded-full text-stone-400 transition hover:bg-stone-100 hover:text-emerald-600 dark:text-stone-500 dark:hover:bg-stone-800 dark:hover:text-emerald-300"
                     >
                       <svg
                         width="16"
@@ -290,7 +290,7 @@ export default function Profile() {
               <div className="mt-1 flex items-center gap-2">
                 <p className="text-sm text-stone-500 dark:text-stone-400">{me.email}</p>
                 {me.role === "admin" && (
-                  <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
                     Admin
                   </span>
                 )}
@@ -304,7 +304,7 @@ export default function Profile() {
                   key={s.label}
                   className="rounded-xl border border-stone-100 bg-stone-50 p-3 text-center dark:border-white/5 dark:bg-stone-800/60"
                 >
-                  <p className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                  <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
                     {s.value}
                   </p>
                   <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">
@@ -322,7 +322,7 @@ export default function Profile() {
                   onClick={() => setTab(t.id)}
                   className={`whitespace-nowrap border-b-2 px-3 py-2.5 text-sm font-semibold transition ${
                     tab === t.id
-                      ? "border-indigo-600 text-indigo-600 dark:text-indigo-400"
+                      ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
                       : "border-transparent text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100"
                   }`}
                 >
@@ -344,7 +344,7 @@ export default function Profile() {
                         <div className="flex items-center gap-1">
                           <Link
                             to="/templates"
-                            className="text-xs font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+                            className="text-xs font-semibold text-emerald-600 hover:text-emerald-500 dark:text-emerald-400"
                           >
                             Browse more →
                           </Link>
@@ -410,7 +410,7 @@ export default function Profile() {
                         Create folders to group templates you love.{" "}
                         <Link
                           to="/collections"
-                          className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+                          className="font-semibold text-emerald-600 hover:text-emerald-500 dark:text-emerald-400"
                         >
                           Get started →
                         </Link>
@@ -433,7 +433,7 @@ export default function Profile() {
                   <div className="flex flex-wrap gap-3 pt-1">
                     <Link
                       to="/favorites"
-                      className="flex h-11 min-w-[8.5rem] items-center justify-center rounded-xl bg-indigo-600 px-5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition hover:bg-indigo-500"
+                      className="flex h-11 min-w-[8.5rem] items-center justify-center rounded-xl bg-emerald-500 px-5 text-sm font-semibold text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-600"
                     >
                       My favorites
                     </Link>
@@ -488,7 +488,7 @@ export default function Profile() {
                       No submissions yet.{" "}
                       <Link
                         to="/submit"
-                        className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+                        className="font-semibold text-emerald-600 hover:text-emerald-500 dark:text-emerald-400"
                       >
                         Submit your first template →
                       </Link>

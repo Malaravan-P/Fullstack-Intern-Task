@@ -41,7 +41,7 @@ export default function Register() {
   }
 
   const inputBase =
-    "w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100 dark:placeholder:text-stone-500";
+    "w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100 dark:placeholder:text-stone-500";
 
   const inputClass = `${inputBase} mt-1.5`;
   const passwordClass = `${inputBase} pr-11`;
@@ -50,7 +50,7 @@ export default function Register() {
     <main className="mx-auto flex min-h-[80vh] max-w-md items-center px-4 py-10">
       <div className="w-full rounded-2xl border border-stone-200 bg-white p-9 shadow-xl shadow-stone-200/60 dark:border-white/10 dark:bg-stone-900 dark:shadow-none">
         <div className="mb-8 flex items-center justify-between gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-xl font-bold text-white shadow-md shadow-indigo-600/25">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-xl font-bold text-white shadow-md shadow-emerald-600/25">
             T
           </div>
           <BackButton inRow />
@@ -92,7 +92,7 @@ export default function Register() {
                       type="button"
                       onClick={() => setShowPassword((s) => !s)}
                       aria-label={showPassword ? "Hide password" : "Show password"}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 transition hover:text-indigo-600 dark:text-stone-500 dark:hover:text-indigo-300"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 transition hover:text-emerald-600 dark:text-stone-500 dark:hover:text-emerald-300"
                     >
                       {showPassword ? (
                         <svg
@@ -148,7 +148,7 @@ export default function Register() {
           <button
             type="submit"
             disabled={busy}
-            className="w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-600/25 transition hover:bg-indigo-500 disabled:opacity-60"
+            className="w-full rounded-xl bg-emerald-500 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-600 disabled:opacity-60"
           >
             {busy ? "Creating account…" : "Create account"}
           </button>
@@ -159,7 +159,7 @@ export default function Register() {
           <Link
             to="/login"
             state={{ from: location.state?.from }}
-            className="font-bold text-indigo-700 hover:underline dark:text-indigo-300"
+            className="font-bold text-emerald-700 hover:underline dark:text-emerald-300"
           >
             Sign in
           </Link>

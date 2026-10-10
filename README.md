@@ -364,4 +364,4 @@ From the brief's final checklist — all requirements satisfied:
 
 ## Contact
 
-**Malaravan** — [malaravan212003@gmail.com](mailto:malaravan212003@gmail.com)
+**Malaravan** — [your-email@example.com](mailto:your-email@example.com)

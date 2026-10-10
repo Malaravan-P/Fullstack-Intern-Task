@@ -6,18 +6,18 @@
     color-scheme: light;
   }
   html.dark {
-    color-scheme: dark; /* native selects, inputs, scrollbars follow the theme */
+    color-scheme: dark;
   }
   body {
     @apply bg-ivory text-stone-900 antialiased dark:bg-[#0e0e13] dark:text-stone-100;
   }
   ::selection {
-    background: #fef08a;
+    background: #6ee7b7;
     color: #1c1917;
     text-shadow: none;
   }
   html.dark ::selection {
-    background: #f59e0b;
+    background: #2dd4bf;
     color: #1c1917;
   }
   ::selection {
@@ -25,36 +25,32 @@
   }
   input::selection,
   textarea::selection {
-    background: #fef08a;
+    background: #6ee7b7;
     color: #1c1917;
   }
   html.dark input::selection,
   html.dark textarea::selection {
-    background: #f59e0b;
+    background: #2dd4bf;
     color: #1c1917;
   }
 }
 
 @layer utilities {
-  /* Smooth dark↔light cross-fade: enabled by JS for ~450ms on toggle only,
-   so normal hovers/transitions stay instant. */
-.theme-transition *,
-.theme-transition *::before,
-.theme-transition *::after {
-  transition:
-    background-color 0.4s ease,
-    border-color 0.4s ease,
-    color 0.4s ease,
-    fill 0.4s ease,
-    box-shadow 0.4s ease !important;
-}
-
-/* Thin accent rule used under headings */
-  .rule {
-    @apply inline-block h-1 w-10 rounded-full bg-gradient-to-r from-indigo-600 to-amber-500;
+  .theme-transition *,
+  .theme-transition *::before,
+  .theme-transition *::after {
+    transition:
+      background-color 0.4s ease,
+      border-color 0.4s ease,
+      color 0.4s ease,
+      fill 0.4s ease,
+      box-shadow 0.4s ease !important;
   }
 
-  /* Animated underline for nav links */
+  .rule {
+    @apply inline-block h-1 w-10 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500;
+  }
+
   .link-draw {
     position: relative;
   }
@@ -66,7 +62,7 @@
     height: 2px;
     width: 100%;
     border-radius: 2px;
-    background: linear-gradient(90deg, #4f46e5, #f59e0b);
+    background: linear-gradient(90deg, #10b981, #14b8a6);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.25s ease;
@@ -76,7 +72,6 @@
     transform: scaleX(1);
   }
 
-  /* Favorite star pop */
   @keyframes star-pop {
     0% { transform: scale(1); }
     40% { transform: scale(1.3); }

@@ -24,10 +24,9 @@ function ThemeToggle({ dark, onToggle }) {
 }
 
 export default function Navbar() {
-  const { user, token } = useAuth();
+  const { user, token, logout } = useAuth();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  // Single source of truth shared by the desktop + mobile toggles.
   const [dark, setDark] = useState(() =>
     document.documentElement.classList.contains("dark")
   );
@@ -36,8 +35,6 @@ export default function Navbar() {
     setDark((prev) => {
       const next = !prev;
       const root = document.documentElement;
-      // Fade colors instead of snapping: temporarily enable transitions,
-      // then remove the class so hovers stay instant afterwards.
       root.classList.add("theme-transition");
       root.classList.toggle("dark", next);
       localStorage.setItem("theme", next ? "dark" : "light");
@@ -52,18 +49,17 @@ export default function Navbar() {
     <header className="sticky top-0 z-20 border-b border-stone-200/70 bg-ivory/80 backdrop-blur dark:border-white/10 dark:bg-[#0e0e13]/80">
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5" onClick={close}>
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-lg font-bold text-white shadow-md shadow-indigo-600/25">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-lg font-bold text-white shadow-md shadow-emerald-600/25">
             T
           </span>
           <span className="text-lg font-bold tracking-tight text-stone-900 dark:text-stone-50">
             Template
-            <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
               Store
             </span>
           </span>
         </Link>
 
-        {/* Desktop nav */}
         <div className="hidden items-center gap-4 sm:flex sm:gap-6">
           <NavLink to="/" className={linkClass} end onClick={close}>
             Home
@@ -97,27 +93,38 @@ export default function Navbar() {
               }}
             />
           )}
-          {user ? (
-            <NavLink
-              to="/profile"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-violet-600 text-xs font-bold text-white"
-              title={`${user.name} — profile`}
-              onClick={close}
-            >
-              {user.name.charAt(0).toUpperCase()}
-            </NavLink>
-          ) : (
+           {user ? (
+             <div className="flex items-center gap-2">
+               <NavLink
+                 to="/profile"
+                 className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 text-xs font-bold text-white"
+                 title={`${user.name} — profile`}
+                 onClick={close}
+               >
+                 {user.name.charAt(0).toUpperCase()}
+               </NavLink>
+               <button
+                 onClick={() => {
+                   logout();
+                   close();
+                 }}
+                 className="flex h-8 items-center justify-center rounded-full bg-stone-200 px-4 text-sm font-semibold text-stone-700 transition hover:bg-stone-300 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-stone-700 touch-target"
+                 title="Logout"
+               >
+                 Logout
+               </button>
+             </div>
+           ) : (
             <Link
               to="/login"
               state={{ from: location }}
-              className="flex h-8 items-center justify-center rounded-full bg-stone-900 px-5 text-sm font-semibold text-white transition hover:bg-stone-700 dark:bg-white dark:text-stone-900 dark:hover:bg-stone-200"
+              className="flex h-8 items-center justify-center rounded-full bg-emerald-500 px-5 text-sm font-semibold text-white transition hover:bg-emerald-600"
             >
               Login
             </Link>
           )}
         </div>
 
-        {/* Mobile: theme + hamburger */}
         <div className="flex items-center gap-2 sm:hidden">
           <ThemeToggle dark={dark} onToggle={toggleTheme} />
           {token && (
@@ -151,7 +158,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile dropdown menu */}
       {menuOpen && (
         <div className="border-t border-stone-200 bg-ivory px-4 py-3 sm:hidden dark:border-white/10 dark:bg-[#0e0e13]">
           <div className="flex flex-col gap-1">
@@ -206,20 +212,31 @@ export default function Navbar() {
                 Review queue
               </NavLink>
             )}
-            {user ? (
-              <NavLink
-                to="/profile"
-                onClick={close}
-                className="rounded-lg px-3 py-2.5 text-sm font-semibold text-stone-700 hover:bg-stone-100 dark:text-stone-200 dark:hover:bg-stone-800"
-              >
-                Profile ({user.name})
-              </NavLink>
-            ) : (
+             {user ? (
+               <>
+                 <NavLink
+                   to="/profile"
+                   onClick={close}
+                   className="rounded-lg px-3 py-2.5 text-sm font-semibold text-stone-700 hover:bg-stone-100 dark:text-stone-200 dark:hover:bg-stone-800"
+                 >
+                   Profile ({user.name})
+                 </NavLink>
+                 <button
+                   onClick={() => {
+                     logout();
+                     close();
+                   }}
+                   className="mt-1 w-full rounded-lg bg-stone-200 px-3 py-2.5 text-center text-sm font-semibold text-stone-700 hover:bg-stone-300 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-stone-700"
+                 >
+                   Logout
+                 </button>
+               </>
+             ) : (
               <NavLink
                 to="/login"
                 onClick={close}
                 state={{ from: location }}
-                className="mt-1 rounded-lg bg-stone-900 px-3 py-2.5 text-center text-sm font-semibold text-white dark:bg-white dark:text-stone-900"
+                className="mt-1 rounded-lg bg-emerald-500 px-3 py-2.5 text-center text-sm font-semibold text-white"
               >
                 Login
               </NavLink>
