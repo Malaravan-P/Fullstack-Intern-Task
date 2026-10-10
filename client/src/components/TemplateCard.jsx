@@ -46,7 +46,7 @@ export default function TemplateCard({
       if (res.ok) {
         setFavorite(false);
         onFavoriteChange?.(template.id, false);
-        toast("Removed from favorites", "success");
+        toast("Removed from favorites", "warning");
       } else {
         toast(res.message, "error");
       }

@@ -247,6 +247,7 @@ Everything in this section goes beyond the four core requirements.
 - **Pagination, sorting & load-more** — page/limit, sort by newest/oldest/name.
 - **Dark mode** — default-dark theme with a persisted toggle (`localStorage`).
 - **Toast notifications** — transient success/error/info feedback across the app (`ToastContext.jsx`).
+- **Custom filter dropdown** — replaced native `<select>` with a custom-styled component that aligns perfectly with the "New collection" button.
 - **Role-based access** — `user`/`admin` roles in the JWT with a `requireAdmin` guard and a `make-admin` CLI.
 - **Input hardening** — centralized JSON error handling, `409` conflict responses (duplicate favorite/collection/category), and 404s that don't leak ownership.
 

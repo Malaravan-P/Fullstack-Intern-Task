@@ -192,14 +192,14 @@ export default function Profile() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 pb-20 pt-14 sm:px-6">
-      <section className="mb-10 flex items-center justify-between gap-4">
-        <div>
-          <span className="rule" />
-          <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100">
+      <section className="mb-10">
+        <span className="rule" />
+        <div className="mt-3 flex items-center justify-between gap-4">
+          <h1 className="font-display text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100">
             Your profile
           </h1>
+          <BackButton inRow />
         </div>
-        <BackButton inRow />
       </section>
 
       <div className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm dark:border-white/10 dark:bg-stone-900">

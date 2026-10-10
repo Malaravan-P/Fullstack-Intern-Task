@@ -72,12 +72,14 @@ export default function SubmitTemplate() {
   if (submitted) {
     return (
       <main className="mx-auto max-w-2xl px-4 pb-20 pt-14 sm:px-6">
-        <BackButton />
         <section className="mb-10">
           <span className="rule" />
-          <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100">
-            Thanks, {submitted.name} 🚀
-          </h1>
+          <div className="mt-3 flex items-center justify-between gap-4">
+            <h1 className="font-display text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100">
+              Thanks, {submitted.name} 🚀
+            </h1>
+            <BackButton inRow />
+          </div>
           <p className="mt-3 text-lg text-stone-500 dark:text-stone-400">
             Your template is in the review queue. An admin will publish or
             reject it shortly.
@@ -126,12 +128,14 @@ export default function SubmitTemplate() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 pb-20 pt-14 sm:px-6">
-      <BackButton />
       <section className="mb-10">
         <span className="rule" />
-        <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100">
-          Submit a template
-        </h1>
+        <div className="mt-3 flex items-center justify-between gap-4">
+          <h1 className="font-display text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100">
+            Submit a template
+          </h1>
+          <BackButton inRow />
+        </div>
         <p className="mt-3 text-lg text-stone-500 dark:text-stone-400">
           Publish your own template on the marketplace — an admin reviews every
           submission before it goes live.

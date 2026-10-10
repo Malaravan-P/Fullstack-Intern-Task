@@ -3,12 +3,17 @@ import { createContext, useCallback, useContext, useState } from "react";
 const ToastContext = createContext(null);
 
 const styles = {
-  success: "border-emerald-300 bg-emerald-50 text-emerald-800",
-  error: "border-red-300 bg-red-50 text-red-700",
-  info: "border-indigo-300 bg-indigo-50 text-indigo-700",
+  success:
+    "border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300",
+  error:
+    "border-red-300 bg-red-50 text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300",
+  warning:
+    "border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300",
+  info:
+    "border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300",
 };
 
-const icons = { success: "✓", error: "✕", info: "ℹ" };
+const icons = { success: "✓", error: "✕", warning: "⚠", info: "ℹ" };
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);

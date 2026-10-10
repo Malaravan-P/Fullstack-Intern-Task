@@ -88,7 +88,7 @@ export default function AdminReviews() {
         status === "approved"
           ? "Approved — now live for everyone."
           : "Rejected — author was not notified (in-app).",
-        "success"
+        status === "approved" ? "success" : "error"
       );
       setSubmissions((prev) => prev.map((s) => (s.id === id ? { ...s, status } : s)));
       setExpandedId(null);
@@ -102,23 +102,31 @@ export default function AdminReviews() {
 
   if (user?.role !== "admin") {
     return (
-      <main className="mx-auto max-w-2xl px-4 pb-20 pt-14 text-center sm:px-6">
-        <BackButton />
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-indigo-100 text-2xl dark:from-amber-500/20 dark:to-indigo-500/20">
-          🔒
+      <main className="mx-auto max-w-2xl px-4 pb-20 pt-14 sm:px-6">
+        <section className="mb-10">
+          <span className="rule" />
+          <div className="mt-3 flex items-center justify-between gap-4">
+            <h1 className="font-display text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100">
+              Admins only
+            </h1>
+            <BackButton inRow />
+          </div>
+          <p className="mt-3 text-lg text-stone-500 dark:text-stone-400">
+            This page is for store administrators reviewing submissions.
+          </p>
+        </section>
+
+        <div className="rounded-2xl border border-dashed border-stone-300 bg-white p-12 text-center dark:border-white/15 dark:bg-stone-900">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-indigo-100 text-2xl dark:from-amber-500/20 dark:to-indigo-500/20">
+            🔒
+          </div>
+          <Link
+            to="/templates"
+            className="mt-6 inline-block rounded-full bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition hover:-translate-y-0.5 hover:bg-indigo-500"
+          >
+            Browse templates →
+          </Link>
         </div>
-        <h1 className="mt-4 font-display text-3xl font-extrabold text-stone-900 dark:text-stone-100">
-          Admins only
-        </h1>
-        <p className="mt-2 text-stone-500 dark:text-stone-400">
-          This page is for store administrators reviewing submissions.
-        </p>
-        <Link
-          to="/templates"
-          className="mt-6 inline-block rounded-full bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition hover:bg-indigo-500"
-        >
-          Browse templates →
-        </Link>
       </main>
     );
   }
@@ -130,12 +138,14 @@ export default function AdminReviews() {
 
   return (
     <main className="mx-auto max-w-4xl px-4 pb-20 pt-14 sm:px-6">
-      <BackButton />
       <section className="mb-8">
         <span className="rule" />
-        <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100">
-          Review submissions
-        </h1>
+        <div className="mt-3 flex items-center justify-between gap-4">
+          <h1 className="font-display text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100">
+            Review submissions
+          </h1>
+          <BackButton inRow />
+        </div>
         <p className="mt-3 text-lg text-stone-500 dark:text-stone-400">
           Approve great templates, reject the rest — authors are notified when
           theirs go live.

@@ -39,7 +39,7 @@ export default function CollectionPickerModal({ templateId, onClose }) {
             : item
         )
       );
-      toast(c.has ? `Removed from ${c.name}` : `Added to ${c.name}`, "success");
+      toast(c.has ? `Removed from ${c.name}` : `Added to ${c.name}`, c.has ? "warning" : "success");
     } else {
       toast(res.message, "error");
     }

@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api, { request } from "../lib/api";
 import BackButton from "../components/BackButton";
+import SortSelect from "../components/SortSelect";
 import TemplateCard from "../components/TemplateCard";
 import { useToast } from "../context/ToastContext";
 
-function CoverStrip({ covers }) {
-  if (!covers.length) {
+function CollectionCover({ cover, name }) {
+  if (!cover) {
     return (
-      <div className="flex h-28 items-center justify-center rounded-2xl bg-gradient-to-br from-stone-100 to-stone-200 text-stone-300 dark:from-stone-800 dark:to-stone-900 dark:text-stone-600">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <div className="flex h-full items-center justify-center bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-300 dark:from-indigo-500/15 dark:to-indigo-500/5 dark:text-indigo-400/60">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <rect width="7" height="7" x="3" y="3" rx="1" />
           <rect width="7" height="7" x="14" y="3" rx="1" />
           <rect width="7" height="7" x="14" y="14" rx="1" />
@@ -18,21 +19,13 @@ function CoverStrip({ covers }) {
       </div>
     );
   }
-  const imgs = covers.slice(0, 3);
-  const extra = covers.length - imgs.length;
   return (
-    <div className="grid h-28 grid-cols-3 gap-1 overflow-hidden rounded-2xl">
-      {imgs.map((c, i) => (
-        <div key={c.template_id} className="relative h-full w-full overflow-hidden">
-          <img src={c.thumbnail_url} alt={c.name} className="h-full w-full object-cover" />
-          {extra > 0 && i === imgs.length - 1 && (
-            <div className="absolute inset-0 flex items-center justify-center bg-stone-900/60 text-xs font-bold text-white">
-              +{extra}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
+    <img
+      src={cover.thumbnail_url}
+      alt={name}
+      loading="lazy"
+      className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
+    />
   );
 }
 
@@ -47,6 +40,23 @@ export default function Collections() {
   const [openId, setOpenId] = useState(null);
   const [detail, setDetail] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [sort, setSort] = useState("newest");
+
+  const sortedCollections = [...collections].sort((a, b) => {
+    switch (sort) {
+      case "oldest":
+        return new Date(a.created_at) - new Date(b.created_at);
+      case "name-asc":
+        return a.name.localeCompare(b.name);
+      case "name-z-a":
+        return b.name.localeCompare(a.name);
+      case "templates":
+        return b.template_count - a.template_count || a.name.localeCompare(b.name);
+      case "newest":
+      default:
+        return new Date(b.created_at) - new Date(a.created_at);
+    }
+  });
 
   const load = async () => {
     const res = await request(api.get("/collections"));
@@ -96,7 +106,7 @@ export default function Collections() {
         setOpenId(null);
         setDetail(null);
       }
-      toast("Collection deleted.", "success");
+      toast("Collection deleted.", "error");
     } else toast(res.message, "error");
   }
 
@@ -123,25 +133,27 @@ export default function Collections() {
           c.id === openId ? { ...c, template_count: Math.max(0, c.template_count - 1) } : c
         )
       );
-      toast("Removed from collection.", "success");
+      toast("Removed from collection.", "warning");
     } else toast(res.message, "error");
   }
 
   return (
     <main className="mx-auto max-w-6xl px-4 pb-20 pt-14 sm:px-6">
-      <BackButton />
       <section className="mb-10">
         <span className="rule" />
-        <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100 sm:text-5xl">
-          My collections
-        </h1>
+        <div className="mt-3 flex items-center justify-between gap-4">
+          <h1 className="font-display text-4xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100 sm:text-5xl">
+            My collections
+          </h1>
+          <BackButton inRow />
+        </div>
         <p className="mt-3 text-lg text-stone-500 dark:text-stone-400">
           Private folders for the templates you like — a template can live in
           several collections at once.
         </p>
       </section>
 
-      {/* Create box */}
+{/* Create box */}
       <form
         onSubmit={create}
         className="mb-10 flex flex-col gap-3 rounded-2xl border border-dashed border-stone-300 bg-white p-5 dark:border-white/15 dark:bg-stone-900 sm:flex-row"
@@ -153,13 +165,16 @@ export default function Collections() {
           maxLength={60}
           className="flex-1 rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-900 placeholder-stone-400 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-white/15 dark:bg-stone-900 dark:text-stone-100 dark:placeholder-stone-500"
         />
-        <button
-          type="submit"
-          disabled={creating || !newName.trim()}
-          className="rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition hover:bg-indigo-500 disabled:opacity-60"
-        >
-          {creating ? "Creating…" : "New collection"}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="submit"
+            disabled={creating || !newName.trim()}
+            className="h-10 rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition hover:bg-indigo-500 disabled:opacity-60"
+          >
+            {creating ? "Creating…" : "New collection"}
+          </button>
+          <SortSelect value={sort} onChange={setSort} />
+        </div>
       </form>
 
       {loading ? (
@@ -193,48 +208,64 @@ export default function Collections() {
       ) : (
         <div className="space-y-6">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {collections.map((c) => (
-              <div
-                key={c.id}
-                className="group cursor-pointer rounded-2xl border border-stone-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-lg dark:border-white/10 dark:bg-stone-900"
-                onClick={() => toggleDetail(c.id)}
-              >
-                <CoverStrip covers={c.covers} />
-                <div className="mt-3 flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <h3 className="truncate font-bold text-stone-900 dark:text-stone-100">
+            {sortedCollections.map((c, i) => {
+              const cover = c.covers[c.covers.length - 1] || null;
+              return (
+                <article
+                  key={c.id}
+                  className="group flex animate-fade-up cursor-pointer flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-stone-900"
+                  style={{ animationDelay: `${Math.min(i, 8) * 70}ms` }}
+                  onClick={() => toggleDetail(c.id)}
+                >
+                  <div className="relative h-44 overflow-hidden">
+                    <CollectionCover cover={cover} name={c.name} />
+                    <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-indigo-700 shadow-sm dark:bg-stone-900/90 dark:text-indigo-300">
+                      {c.template_count} {c.template_count === 1 ? "template" : "templates"}
+                    </span>
+                    <div className="absolute right-3 top-3 flex gap-2 opacity-0 transition group-hover:opacity-100">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditingId(c.id);
+                          setEditingName(c.name);
+                        }}
+                        className="flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-sm text-stone-600 shadow-sm transition hover:bg-white dark:bg-stone-900/90 dark:text-stone-300 dark:hover:bg-stone-800"
+                        aria-label={`Rename ${c.name}`}
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          remove(c.id);
+                        }}
+                        className="flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-sm text-red-500 shadow-sm transition hover:bg-red-50 dark:bg-stone-900/90 dark:hover:bg-red-500/10"
+                        aria-label={`Delete ${c.name}`}
+                      >
+                        🗑️
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-1 flex-col p-5">
+                    <h3 className="truncate font-semibold text-stone-900 dark:text-stone-100">
                       {c.name}
                     </h3>
-                    <p className="text-xs font-medium text-stone-400 dark:text-stone-500">
-                      {c.template_count} {c.template_count === 1 ? "template" : "templates"}
-                    </p>
+                    <div className="mt-4 flex">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleDetail(c.id);
+                        }}
+                        className="flex h-11 flex-1 items-center justify-center whitespace-nowrap rounded-xl border border-stone-200 px-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-50 dark:border-white/10 dark:text-stone-200 dark:hover:bg-stone-800"
+                      >
+                        Open collection →
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex gap-1 opacity-0 transition group-hover:opacity-100">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setEditingId(c.id);
-                        setEditingName(c.name);
-                      }}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg text-sm text-stone-500 transition hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-stone-800"
-                      aria-label={`Rename ${c.name}`}
-                    >
-                      ✏️
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        remove(c.id);
-                      }}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg text-sm text-red-500 transition hover:bg-red-50 dark:hover:bg-red-500/10"
-                      aria-label={`Delete ${c.name}`}
-                    >
-                      🗑️
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+                </article>
+              );
+            })}
           </div>
 
           {editingId && (

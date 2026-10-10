@@ -88,7 +88,7 @@ export default function PreviewModal({ templateId, onClose, isFavorite, onFavori
       if (res.ok) {
         setFav(false);
         onFavoriteChange?.(Number(templateId), false);
-        toast("Removed from favorites", "success");
+        toast("Removed from favorites", "warning");
       } else toast(res.message, "error");
     }
     setBusy(false);
