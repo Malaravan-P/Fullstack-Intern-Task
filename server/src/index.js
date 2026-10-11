@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const fs = require("fs");
 
 const authRoutes = require("./routes/auth");
 const templateRoutes = require("./routes/templates");
@@ -36,15 +37,31 @@ app.use("/api/collections", collectionRoutes);
 app.use("/api/me", meRoutes);
 
 // Serve static files from the built React app
-const distPath = path.join(__dirname, "../../client/dist");
-app.use(express.static(distPath));
+const distPath = path.resolve(__dirname, "../../client/dist");
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+}
 
-// SPA fallback: for non-API routes, serve index.html
-app.get("*", (req, res) => {
-  if (req.path.startsWith("/api")) {
-    return res.status(404).json({ success: false, message: "Route not found." });
+// SPA fallback for non-API GET requests
+app.use((req, res, next) => {
+  if (req.method !== "GET" || req.path.startsWith("/api")) {
+    return next();
   }
-  res.sendFile(path.join(distPath, "index.html"));
+  const indexPath = path.join(distPath, "index.html");
+  if (fs.existsSync(indexPath)) {
+    return res.sendFile(indexPath);
+  }
+  return next();
+});
+
+/* API 404 handler */
+app.use("/api", (req, res) => {
+  res.status(404).json({ success: false, message: "Route not found." });
+});
+
+/* Non-API 404 handler */
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: "Route not found." });
 });
 
 /* Central error handler */
