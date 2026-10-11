@@ -1,14 +1,14 @@
-const isProd = process.env.NODE_ENV === "production" || !!process.env.DATABASE_URL;
+const hasDatabaseUrl = !!(process.env.DATABASE_URL && process.env.DATABASE_URL.trim());
 
 const knex = require("knex")({
-  client: isProd ? "pg" : "sqlite3",
-  connection: isProd
+  client: hasDatabaseUrl ? "pg" : "sqlite3",
+  connection: hasDatabaseUrl
     ? {
         connectionString: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: false },
       }
     : { filename: "./data.sqlite3" },
-  useNullAsDefault: !isProd,
+  useNullAsDefault: !hasDatabaseUrl,
 });
 
 module.exports = knex;

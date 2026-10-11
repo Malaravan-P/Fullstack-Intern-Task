@@ -1,18 +1,18 @@
 /**
  * Knex configuration.
- * Uses PostgreSQL in production (when DATABASE_URL is set), falls back to SQLite locally.
+ * Uses PostgreSQL if DATABASE_URL is set; otherwise falls back to SQLite locally.
  */
-const isProd = process.env.NODE_ENV === "production" || !!process.env.DATABASE_URL;
+const hasDatabaseUrl = !!(process.env.DATABASE_URL && process.env.DATABASE_URL.trim());
 
 module.exports = {
-  client: isProd ? "pg" : "sqlite3",
-  connection: isProd
+  client: hasDatabaseUrl ? "pg" : "sqlite3",
+  connection: hasDatabaseUrl
     ? {
         connectionString: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: false },
       }
     : { filename: "./data.sqlite3" },
-  useNullAsDefault: !isProd,
+  useNullAsDefault: !hasDatabaseUrl,
   migrations: { directory: "./src/migrations" },
   seeds: { directory: "./src/seeds" },
 };
