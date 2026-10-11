@@ -41,30 +41,40 @@ router.get("/", async (req, res) => {
   try {
     const { search, category, sort, page, limit } = req.query;
 
-    let query = knex("templates");
+    // Base filters (no ordering/joins) reused for both the count and the page.
     // Only approved templates are public; pending/rejected submissions stay hidden.
-    query.where("status", "approved");
-
-    if (search && String(search).trim()) {
-      const term = `%${String(search).trim()}%`;
-      query
-        .where((b) =>
-          b.where("name", "like", term).orWhere("description", "like", term)
+    const baseFilters = () => {
+      const q = knex("templates").where("status", "approved");
+      if (search && String(search).trim()) {
+        const term = `%${String(search).trim().toLowerCase()}%`;
+        q.where((b) =>
+          b
+            .whereRaw("lower(name) like ?", [term])
+            .orWhereRaw("lower(description) like ?", [term])
         );
-    }
-    if (category && String(category).trim()) {
-      query.where("category", String(category).trim());
-    }
-
-    if (sort === "newest") query.orderBy("created_at", "desc").orderBy("id", "desc");
-    else if (sort === "oldest") query.orderBy("created_at", "asc").orderBy("id", "asc");
-    else if (sort === "name") query.orderBy("name", "asc");
-    else if (sort === "popular") query.orderBy("rating_count", "desc").orderBy("avg_rating", "desc");
-    else query.orderBy("id");
+      }
+      if (category && String(category).trim()) {
+        q.where("category", String(category).trim());
+      }
+      return q;
+    };
 
     // Total count (before pagination) for load-more UI.
-    const totalRow = await query.clone().count({ total: "*" }).first();
+    const totalRow = await baseFilters().count({ total: "*" }).first();
     const total = Number(totalRow?.total) || 0;
+
+    let query = baseFilters();
+    if (sort === "popular") {
+      // "popular" is derived from the ratings table, not columns on templates.
+      query = query
+        .leftJoin("ratings", "ratings.template_id", "templates.id")
+        .groupBy("templates.id")
+        .orderByRaw('count("ratings"."id") desc')
+        .orderByRaw('avg("ratings"."score") desc nulls last');
+    } else if (sort === "newest") query.orderBy("created_at", "desc").orderBy("id", "desc");
+    else if (sort === "oldest") query.orderBy("created_at", "asc").orderBy("id", "asc");
+    else if (sort === "name") query.orderBy("name", "asc");
+    else query.orderBy("id");
 
     const pageNum = Math.max(1, Number(page) || 1);
     const rawLimit = Number(limit);
@@ -77,13 +87,13 @@ router.get("/", async (req, res) => {
     // List view omits preview_html to keep paged responses small; the detail
     // route returns it for the live preview.
     const templates = await query.select(
-      "id",
-      "name",
-      "description",
-      "thumbnail_url",
-      "category",
-      "created_at",
-      "updated_at"
+      "templates.id",
+      "templates.name",
+      "templates.description",
+      "templates.thumbnail_url",
+      "templates.category",
+      "templates.created_at",
+      "templates.updated_at"
     );
     const withAvg = await withRatings(templates);
 
