@@ -15,6 +15,7 @@ The app started from the four core requirements in the brief (auth, browse, favo
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Setup](#setup)
+- [Deployment (Render)](#deployment-render)
 - [Required Features (from the assessment brief)](#required-features-from-the-assessment-brief)
 - [Added Extra (beyond the requirements)](#added-extra-beyond-the-requirements)
 - [API Reference](#api-reference)
@@ -34,8 +35,8 @@ The app started from the four core requirements in the brief (auth, browse, favo
 | Styling | Tailwind CSS 3 | Brief lists Tailwind as *preferred* |
 | HTTP client | Axios | Required by the brief; instance with a JWT request interceptor |
 | Backend | Node.js + Express 4 | Required |
-| Database | SQLite | Brief allowed SQLite / PostgreSQL / MongoDB — SQLite chosen |
-| Query builder | Knex.js | Brief required Knex **or** Mongoose — Knex (with SQLite) |
+| Database | SQLite (local) / PostgreSQL (production) | Brief allowed SQLite / PostgreSQL / MongoDB — SQLite locally, Render PostgreSQL in production |
+| Query builder | Knex.js | Brief required Knex **or** Mongoose — Knex (SQLite / PostgreSQL) |
 | Auth | JWT (`jsonwebtoken`) + `bcryptjs` | 7-day Bearer tokens, hashed passwords |
 | Version control | Git | Public GitHub repository |
 
@@ -75,7 +76,7 @@ The app started from the four core requirements in the brief (auth, browse, favo
 ### Prerequisites
 
 - **Node.js 18+** and npm
-- The database is SQLite (file-based) — no separate database server is required.
+- Local development uses SQLite (file-based) — no separate database server is required. Set `DATABASE_URL` to use PostgreSQL (as in production) instead.
 
 ### 1. Backend (`server`)
 
@@ -121,6 +122,66 @@ npm run make-admin you@example.com --remove  # revoke admin
 ```
 
 Log out and back in afterwards so the new role is included in the JWT.
+
+---
+
+## Deployment (Render)
+
+The app is deployed entirely on **Render** as a **single Web Service**: Express serves both the API (`/api/*`) and the built React app (static files + SPA fallback), backed by a **Render PostgreSQL** database.
+
+> **Live:** https://templatestore.onrender.com
+
+### Render configuration
+
+| Setting | Value |
+|---|---|
+| Service type | Web Service (Node) |
+| Root Directory | *(repository root)* |
+| Build Command | `npm ci --prefix client && npm run build --prefix client && npm ci --prefix server` |
+| Start Command | `npm run migrate --prefix server && node server/src/index.js` |
+
+### Environment variables
+
+| Key | Value |
+|---|---|
+| `DATABASE_URL` | Render PostgreSQL **Internal Database URL** |
+| `JWT_SECRET` | long random string |
+| `NODE_ENV` | `production` |
+| `SEED_ON_START` | `true` (optional — one-time, idempotent seed) |
+
+### Notes
+
+- The client build needs dev dependencies (Vite/Tailwind). Because `NODE_ENV=production` makes npm omit `devDependencies`, `client/.npmrc` sets `include=dev` (and the build command passes `--include=dev`) so Vite is available at build time.
+- When `DATABASE_URL` is set, Knex uses the `pg` client with SSL; otherwise it falls back to the SQLite file. Migrations run on every deploy via the Start Command.
+- The frontend is built to `client/dist/` and served by Express; non-API routes fall back to `index.html` for client-side routing (React Router).
+
+### Seed the database (on Render)
+
+The Start Command runs migrations only. Seed the 18 sample templates in either way:
+
+- Set `SEED_ON_START=true` and redeploy — seeds **only if the `templates` table is empty** (safe to leave enabled), **or**
+- Since Render Shell is a paid feature, run it from your machine against the Postgres **External Database URL**:
+  ```bash
+  DATABASE_URL="postgres://...external..." npm run seed --prefix server
+  ```
+
+### Create an admin (on Render)
+
+Register a user in the UI, then promote them from your machine:
+
+```bash
+DATABASE_URL="postgres://...external..." npm run make-admin --prefix server you@example.com
+```
+
+### Troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `SQLITE_ERROR: no such table` | App fell back to SQLite | Ensure `DATABASE_URL` is set on the Web Service |
+| `npm ci ... out of sync` | `package-lock.json` not regenerated | Run `npm install` in the affected workspace and commit the lockfile |
+| `sh: 1: vite: not found` | Dev dependencies omitted (`NODE_ENV=production`) | Ensure `client/.npmrc` contains `include=dev` (or add `--include=dev` to the build) |
+| `/api/templates` returns `[]` | No seed data | Run the seed (see above) |
+| Slow first request | Free tier spins down when idle | Expected cold start (~30–60s) |
 
 ---
 
@@ -218,8 +279,8 @@ Everything in this section goes beyond the four core requirements.
 | Category-based filtering | ✅ | Category chips + `?category=` (`GET /api/templates/categories`) |
 | Logout button | ✅ | In the navbar menu and Profile → Settings |
 | Protected routes | ✅ | `ProtectedRoute` guards `/favorites`, `/collections`, `/profile`, `/submit`, `/admin/reviews` |
-| Deploy backend (Render/Vercel) | ⛔ Not implemented | Runs locally only |
-| Deploy frontend (Vercel/Netlify) | ⛔ Not implemented | Runs locally only |
+| Deploy backend (Render/Vercel) | ✅ | Single Render Web Service (Express) + Render PostgreSQL — see [Deployment (Render)](#deployment-render) |
+| Deploy frontend (Vercel/Netlify) | ✅ | Built with Vite and served by Express (SPA fallback) from the same Render service |
 
 ### B. Extra features (not requested at all)
 
