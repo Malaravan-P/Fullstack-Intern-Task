@@ -1,12 +1,8 @@
-/**
- * Express app entry point.
- * Routes: /api/auth, /api/templates, /api/favorites
- * Run: npm run dev (or npm start)
- */
 require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 const authRoutes = require("./routes/auth");
 const templateRoutes = require("./routes/templates");
@@ -39,9 +35,16 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/collections", collectionRoutes);
 app.use("/api/me", meRoutes);
 
-/* 404 handler */
-app.use((req, res) => {
-  res.status(404).json({ success: false, message: "Route not found." });
+// Serve static files from the built React app
+const distPath = path.join(__dirname, "../../client/dist");
+app.use(express.static(distPath));
+
+// SPA fallback: for non-API routes, serve index.html
+app.get("*", (req, res) => {
+  if (req.path.startsWith("/api")) {
+    return res.status(404).json({ success: false, message: "Route not found." });
+  }
+  res.sendFile(path.join(distPath, "index.html"));
 });
 
 /* Central error handler */
