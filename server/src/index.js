@@ -16,6 +16,8 @@ const notificationRoutes = require("./routes/notifications");
 const collectionRoutes = require("./routes/collections");
 const meRoutes = require("./routes/me");
 
+const knex = require("./db");
+
 const app = express();
 
 app.use(cors());
@@ -73,7 +75,31 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: "Internal server error." });
 });
 
+/**
+ * One-time, idempotent seed guarded by SEED_ON_START.
+ * Runs only when explicitly enabled and only if the templates table is empty,
+ * so it never overwrites existing data and is safe to leave enabled.
+ */
+async function autoSeedIfRequested() {
+  if (process.env.SEED_ON_START !== "true") return;
+  try {
+    const row = await knex("templates").count({ total: "*" }).first();
+    const count = Number(row?.total) || 0;
+    if (count > 0) {
+      console.log(`[seed] ${count} templates present - skipping auto-seed`);
+      return;
+    }
+    const { seed } = require("./seeds/templates");
+    await seed(knex);
+    console.log("[seed] auto-seed complete");
+  } catch (err) {
+    console.error("[seed] auto-seed failed (continuing):", err);
+  }
+}
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+autoSeedIfRequested().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
 });

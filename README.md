@@ -92,9 +92,13 @@ Optional environment variables (create `server/.env`):
 ```bash
 PORT=5000
 JWT_SECRET=replace-me-with-a-long-random-string
+# DATABASE_URL=postgres://user:pass@host:5432/dbname   # enables PostgreSQL instead of SQLite
+# SEED_ON_START=true                                    # one-time, idempotent seed on boot
 ```
 
 > If `JWT_SECRET` is not set, a development fallback secret is used. Do **not** rely on the fallback in production.
+
+> When `DATABASE_URL` is set the server uses PostgreSQL (with SSL); otherwise it falls back to the SQLite file. Setting `SEED_ON_START=true` seeds the 18 sample templates on startup **only if the templates table is empty**, so it never overwrites existing data and is safe to leave enabled.
 
 ### 2. Frontend (`client`)
 
